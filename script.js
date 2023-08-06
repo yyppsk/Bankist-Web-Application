@@ -76,7 +76,7 @@ const displayMovements = function (movements) {
           <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
-          <div class="movements__value">${mov}</div>
+          <div class="movements__value">${mov}€</div>
     </div>`;
     containerMovements.insertAdjacentHTML('afterbegin', html);
   });
@@ -84,10 +84,12 @@ const displayMovements = function (movements) {
 
 displayMovements(account1.movements);
 
+//Main Balance
 const calcDisplayBalance = function (movements) {
   const balance = movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${balance} EUR`;
+  labelBalance.textContent = `${balance}€`;
 };
+
 calcDisplayBalance(account1.movements);
 //Creating new usernames for each account object iteratively
 const createUsernames = function (accs) {
@@ -100,6 +102,28 @@ const createUsernames = function (accs) {
   });
 };
 createUsernames(accounts);
+
+//Sum In Balance & Sum Out
+const calcDisplaySummary = function (movements) {
+  const incomes = movements
+    .filter(mov => mov > 0)
+    .reduce((total, mov) => total + mov, 0);
+  labelSumIn.textContent = `${incomes}€`;
+
+  const outgoing = movements
+    .filter(mov => mov < 0)
+    .reduce((total, mov) => total + mov, 0);
+  labelSumOut.textContent = `${Math.abs(outgoing)}€`;
+
+  const interest = movements
+    .filter(mov => mov > 0)
+    .map(deposit => (deposit * 1.2) / 100)
+    .filter(int => int >= 1)
+    .reduce((acc, interestStuff) => acc + interestStuff, 0);
+  labelSumInterest.textContent = `${interest}€`;
+};
+calcDisplaySummary(account1.movements);
+
 /////////////////////////////////////////////////
 //PRACTICE STUFF
 
@@ -111,3 +135,20 @@ const withdrawls = movements.filter(mov => mov < 0);
 console.log(withdrawls);
 
 const balance = movements.reduce((acc, arr) => acc + curr, 0);
+
+const calcAge = function (data) {
+  //Mapping stuff
+  const converted = data.map(age => {
+    if (age <= 2) return 2 * age;
+    else return 16 + age * 4;
+  });
+  const ageFilter = converted.filter(age => age > 18);
+
+  const avg = ageFilter.reduce((total, age) => {
+    return total + age / ageFilter.length;
+  }, 0);
+  console.log(avg);
+};
+calcAge([5, 2, 4, 1, 15, 8, 3]);
+
+/////////////////////////////////////////////////
