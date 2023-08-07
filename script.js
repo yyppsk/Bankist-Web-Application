@@ -229,6 +229,17 @@ btnSort.addEventListener('click', function (e) {
   sorted = !sorted;
 });
 
+btnLogout.addEventListener('click', function (e) {
+  e.preventDefault();
+  containerApp.style.opacity = 0;
+  inputLoginUsername.style.display = 'block';
+  inputLoginPin.style.display = 'block';
+  btnLogin.style.display = 'block';
+  btnLogout.style.display = 'none';
+  labelWelcome.textContent = `Login to Get Started`;
+  currentAccount = undefined;
+});
+
 /////////////////////////////////////////////////
 //PRACTICE STUFF
 
